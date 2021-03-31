@@ -3,7 +3,7 @@ package com.redi.oop;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,7 +15,7 @@ public class Account {
     //try- counter for pin- enties made...
     int tryCounter = 2;
 
-    //static int totalaccount- Counter to set new account number automatically.
+    //static int totalAccounts- Counter to set new account number automatically.
     private static int totalAccounts = 0;
     private int accountNumber;
     private String accountHolder;
@@ -42,6 +42,7 @@ public class Account {
 
 
     //constructors
+
     Account(){
         this.accountNumber = ++totalAccounts;
     }
@@ -53,7 +54,7 @@ public class Account {
 
 
     //getters
-    public static int getTotalAccounts() {
+    public int getTotalAccounts() {
         return totalAccounts;
     }
 
