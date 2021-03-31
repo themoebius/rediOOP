@@ -88,14 +88,13 @@ public class Atm {
                 System.out.printf("Your PIN: %d\n", outputPin);
 
 
-
-
-
                 //calling Account.deposit() as part of initial account- setup to set initial balance..
                 //handing newly created pin over- this only happens during acct creation- pin must be entered
                 //manually during every further interaction...
                 System.out.println("Please make your first deposit to finalize the process: please enter the amount you wish to deposit");
+
                 double initialPayment = scanner.nextDouble();
+
 
                 newAccount.deposit(outputPin, initialPayment);
 
