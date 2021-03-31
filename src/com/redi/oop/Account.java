@@ -135,22 +135,15 @@ public class Account {
         int inputPin = scanner.nextInt();
         int tryAgain = 1;
 
-        final boolean[] receiverHasAccount = new boolean[1];
 
-        //check if AcctNo already exists in Hashmap for all accounts
-        //if true, setting receiverhasAccount[0] to true...
-        Main.accounts.forEach((key, value) -> {
-            if (value == receiverAccountNo) {
-               receiverHasAccount[0] = true;
-            }
-        });
+        boolean receiverHasAccount = Main.accountCheck(receiverAccountNo);
 
         boolean newTransactions = false;
         boolean isPin = this.pin == inputPin;
         double[] transaction;
         double[] receiverTransaction;
 
-        if(balanceCheck(amount) & isPin & receiverHasAccount[0] == true) {
+        if(balanceCheck(amount) & isPin & receiverHasAccount) {
             double transactionAmount = amount * -1;
 
             transaction = new double[]{1, transactionAmount, receiverAccountNo};
@@ -174,11 +167,30 @@ public class Account {
             System.out.println("Do you want to make another transaction?\nType '1' for YES or '0' for NO");
             tryAgain = scanner.nextInt();
             if (tryAgain > 0) {
+                double newAmount = 0;
                 System.out.println("Please enter the receivers acct No.");
                 int newReceiver = scanner.nextInt();
-                System.out.println("Please enter the amount");
-                double newAmount = scanner.nextDouble();
-                transaction(newAmount, newReceiver);
+
+                receiverHasAccount = Main.accountCheck(newReceiver);
+
+
+                if(receiverHasAccount) {
+                    System.out.println("Please enter the amount");
+                    newAmount = scanner.nextDouble();
+                    transaction(newAmount, newReceiver);
+                }else{
+                    while(!receiverHasAccount) {
+                        System.out.println("No Account existent- can not make transfer");
+                        System.out.println("Please enter the receivers acct No.");
+                        newReceiver = scanner.nextInt();
+                        receiverHasAccount = Main.accountCheck(newReceiver);
+                    }
+                    System.out.println("Please enter the amount");
+                    newAmount = scanner.nextDouble();
+                    transaction(newAmount, newReceiver);
+                }
+
+
             } else {
                 System.out.printf("Thank You.\nYour Balance is: %.2f\n", balance);
 
@@ -187,10 +199,10 @@ public class Account {
 
                     for(double[] transactionArray : this.transactionHistory){
                         if(transactionArray[0]==1) {
-                            System.out.println("Sum: " + (transactionArray[1] * -1) + "  | transferred to Acct: " + transactionArray[2]);
+                            System.out.println("Sum: " + transactionArray[1] + "  | transferred to Acct: " + (int) transactionArray[2]);
                         }
                         else if(transactionArray[0]==0) {
-                            System.out.println("Sum: " + transactionArray[1] + "  | received from Acct: " + transactionArray[2]);
+                            System.out.println("Sum: +" + transactionArray[1] + "  | received from Acct: " + (int) transactionArray[2]);
                         }
                     }
                 }
@@ -202,7 +214,13 @@ public class Account {
 
             if(tryAgain == 1){
                 Double newAmount = scanner.nextDouble();
-                transaction(newAmount, receiverAccountNo);
+
+                receiverHasAccount = Main.accountCheck(receiverAccountNo);
+                if(receiverHasAccount) {
+                    transaction(newAmount, receiverAccountNo);
+                }else{
+                        System.out.println("BLIB");
+                    }
             }
         }
         else if (tryCounter > 0){
@@ -214,12 +232,4 @@ public class Account {
             System.out.println("TILT!");
         }
     }
-
-
-
-
-
-
-
-
 }
