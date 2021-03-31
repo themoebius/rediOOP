@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -18,13 +15,25 @@ public class Main {
     //HashMap storing all <Name, AccountNo> for ACCOUNT
     static HashMap<String, Integer> accounts= new HashMap<>();
 
-    //HashMap storing all <Name, AccountNo> for PERSON
+    //HashMap storing all <Name, Birthdate> for PERSON
     static HashMap<String, Date> people = new HashMap<>();
 
     //ArrayList storing all Account Objects
     static ArrayList<Account> accountList= new ArrayList<>();
 
 
+    public static boolean accountCheck(int accountNo){
+        boolean returnBool = false;
+        for (Map.Entry<String, Integer> entry : Main.accounts.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+
+            if (value == (Integer) accountNo) {
+                returnBool = true;
+            }
+        }
+        return returnBool;
+    }
 
     //method to create Person-Object containing name, dob, acctNo(default:0);
     public static Person createPerson() {
@@ -66,21 +75,10 @@ public class Main {
         Person test2 =createPerson();
         Account p1acct2 = Atm.openAccount();
 
+        p1acct1.transaction(119., 2);
 
-        System.out.println("acct b: " + p1acct2.getBalance());
-        p1acct1.transaction(99.99,2);
-        System.out.println("acct b: " + p1acct2.getBalance());
+        p1acct2.transaction(119., 2);
 
-
-        System.out.println("acct a: " + p1acct1.getBalance());
-
-        p1acct2.transaction(1.11,1);
-
-        System.out.println("acct a: " + p1acct1.getBalance());
-
-
-        p1acct1.transaction(0.01,2);
-        System.out.println("acct b: " + p1acct2.getBalance());
 
     }
 }
