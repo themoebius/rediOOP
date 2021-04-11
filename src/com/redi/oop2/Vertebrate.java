@@ -20,7 +20,7 @@ class Vertebrate{
     public void printInfo() {
         System.out.printf("\nHello, my name is %S \n" +
                         "I classify as: %S \n",
-                name, classification);
+                        name, classification);
     }
 
 

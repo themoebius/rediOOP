@@ -1,11 +1,14 @@
 package com.redi.oop2;
 
+import com.redi.oop3.weapon.Weapon;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
 
 public class Main {
+
     static Scanner scanner = new Scanner(System.in);
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -41,9 +44,9 @@ public class Main {
 
         TheDog testDog = new TheDog("Scooby", "black",true, 4.5);
 
-        Vertebrate[] allMyanimals = new Vertebrate[]{horst, hans, jodie, basic, hugo, paul, testDog, testCat};
+        Vertebrate[] allMyAnimals = new Vertebrate[]{horst, hans, jodie, basic, hugo, paul, testDog, testCat};
 
-        for(Vertebrate animal : allMyanimals){
+        for(Vertebrate animal : allMyAnimals){
             animal.printInfo();
         }
     }
