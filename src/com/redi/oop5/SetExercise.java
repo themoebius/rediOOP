@@ -62,7 +62,7 @@ public class SetExercise {
     */
     public static char[] uniqueCharsInString(String inputString){
         char[] StringToArray = inputString.toCharArray();
-        HashSet<Character> sortSet = new HashSet<>();
+        HashSet<Character> sortSet = new LinkedHashSet<>();
 
         for(char c : StringToArray){
             sortSet.add(c);
