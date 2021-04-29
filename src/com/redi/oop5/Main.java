@@ -2,7 +2,6 @@ package com.redi.oop5;
 
 import static com.redi.oop5.SetExercise.*;
 
-
 public class Main {
 
     public static void main(String[] args) {
