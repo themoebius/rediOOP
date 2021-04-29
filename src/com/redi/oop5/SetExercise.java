@@ -1,9 +1,6 @@
 package com.redi.oop5;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class SetExercise {
     static Scanner scanner = new Scanner(System.in);
@@ -35,13 +32,6 @@ public class SetExercise {
 
 
 
-
-
-
-
-
-
-
     /*
     Exercise 1
     Write a method that takes an array with integers and return an array of unique values of the array
@@ -64,6 +54,7 @@ public class SetExercise {
 
     }
 
+
     /*
     Exercise 2
     Write a method that takes a String and returns all unique characters of this String
@@ -85,8 +76,6 @@ public class SetExercise {
         }
         return returnArray;
     }
-
-
 
 
     /*
@@ -127,9 +116,30 @@ public class SetExercise {
     }
 
 
-
     /*
     Exercise 4
+    Write a static method union that will return an union of two sets given by parameters.
+    Note - sets given by parameters may not be modified.
+    Don't know if union allows for multiple occurrences of the same value...
+    */
+    public static TreeSet<Integer> unionSet(HashSet<Integer> compareSet1, HashSet<Integer> compareSet2){
+        /*
+        ArrayList<Integer> unionListMultiple = new ArrayList<>();
+        unionListMultiple.addAll(compareSet1);
+        unionListMultiple.addAll(compareSet2);
+        return unionListMultiple;
+        */
+
+        TreeSet<Integer> unionSetSingle = new TreeSet<>();
+        unionSetSingle.addAll(compareSet1);
+        unionSetSingle.addAll(compareSet2);
+
+        return unionSetSingle;
+    }
+
+
+    /*
+    Exercise 5
     Write a static method difference that will return a difference between two sets given by parameters.
     Note - sets given by parameters may not be modified.
     */
@@ -155,7 +165,7 @@ public class SetExercise {
                 diffSet.removeAll(compareSet1);
                 return diffSet;
             case 3 :
-                //gives the values that are in compareSet1 but NOT in compareSet2
+                //gives the values that are in compareSet1 AND compareSet2 but NOT in both
                 diffSet.addAll(compareSet1);
                 diffSet.removeAll(compareSet2);
                 symmetricDiffSet.addAll(diffSet);
