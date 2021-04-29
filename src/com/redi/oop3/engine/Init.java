@@ -113,7 +113,8 @@ public class Init {
                 continue;
             }
         }
-       return rounds;
+       //comment/uncomment according to choice for attack-shuffle-settings above
+        return rounds;
     }
 
     //method to check if 2 randomly selected Characters are == to prevent a Character ending up battling itself

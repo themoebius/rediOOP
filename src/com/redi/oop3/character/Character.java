@@ -18,20 +18,20 @@ public class Character {
     private Weapon[] weaponList = new Weapon[2];
     private Weapon weapon;
     private int weaponCount;
-
+    public boolean isLoser;
     //attack-method:
     //math to calculate attack-points depending on luck and base-stats of Character & Weapon happens here
 
-    public boolean attack(Character opponent){
+    public boolean attack(Character opponent) {
         double randomMultiplier = Math.random();
         double randomWeaponMultiplier = Math.random();
         boolean weaponDualWield = false;
 
         //check if Character has 2 weapons and has the according skill (isTwoHanded)...
-        boolean characterDualWield = this.getWeaponCount() == 2 & this.isTwoHanded ? true :false;
+        boolean characterDualWield = this.getWeaponCount() == 2 & this.isTwoHanded ? true : false;
 
         //check if both weapons can be used for dualWielding...
-        if(characterDualWield){
+        if (characterDualWield) {
             weaponDualWield = this.getWeaponsCarried()[0].isCanDualWield() & this.getWeaponsCarried()[1].isCanDualWield();
         }
 
@@ -41,57 +41,60 @@ public class Character {
         System.out.println(this.getUniqueName() + " v " + opponent.getUniqueName());
 
         //calculating hitPoints depending on skill/ weapons / luck
-        double attackDamage = weapon == null?  (randomMultiplier * (this.damagePoints + this.skillPoints) / 10) :
-                doDualWield?
-                        (randomMultiplier * (this.damagePoints + this.skillPoints) /10) +
-                        (randomWeaponMultiplier * (this.weapon.getDamagePoints() + ((double) this.weapon.getWeaponStatus() / 10))) +
+        double attackDamage = weapon == null ? (randomMultiplier * (this.damagePoints + this.skillPoints) / 10) :
+                doDualWield ?
+                        (randomMultiplier * (this.damagePoints + this.skillPoints) / 10) +
+                                (randomWeaponMultiplier * (this.weapon.getDamagePoints() + ((double) this.weapon.getWeaponStatus() / 10))) +
                                 (randomWeaponMultiplier * (this.getWeaponsCarried()[1].getDamagePoints() + ((double) this.getWeaponsCarried()[1].getWeaponStatus() / 10)))
-                        : (randomMultiplier * (this.damagePoints + this.skillPoints) /10) +
+                        : (randomMultiplier * (this.damagePoints + this.skillPoints) / 10) +
                         (randomWeaponMultiplier * (this.weapon.getDamagePoints() + ((double) this.weapon.getWeaponStatus() / 10)));
+        if (opponent.isLoser && opponent.getUniqueName().equals(this.getUniqueName())) {
+            System.out.println("Suicide or life after death are not unlocked yet...");
+            return false;
+        } else {
 
+            if (!opponent.doDefend() & opponent.getHealthPoints() > 0 & !opponent.isLoser & !this.isLoser) {
+                opponent.setHealthPoints(opponent.getHealthPoints() - attackDamage);
+                if (doDualWield) {
+                    System.out.printf("%s attacked with 2 weapons: %s and %s\n", this.getUniqueName(), this.getWeaponsCarried()[0].getCategory(), this.getWeaponsCarried()[1].getCategory());
+                    System.out.printf("Attack damage: %.2f\n", attackDamage);
+                } else if (this.weapon == null) {
+                    System.out.printf("%s attacked without a weapon\n", this.getUniqueName());
+                    System.out.printf("Attack damage: %.2f\n", attackDamage);
+                } else {
+                    System.out.printf("Regular Attack with %s\n", this.weapon.getCategory());
+                    System.out.printf("Attack damage: %.2f\n", attackDamage);
+                }
 
-        if(!opponent.doDefend() & opponent.getHealthPoints() >0) {
-           opponent.setHealthPoints(opponent.getHealthPoints() -attackDamage);
-           if(doDualWield){
-               System.out.printf("%s attacked with 2 weapons: %s and %s\n",this.getUniqueName(),this.getWeaponsCarried()[0].getCategory(), this.getWeaponsCarried()[1].getCategory());
-               System.out.printf("Attack damage: %.2f\n", attackDamage);
-           }
-           else if(this.weapon == null){
-               System.out.printf("%s attacked without a weapon\n",this.getUniqueName());
-               System.out.printf("Attack damage: %.2f\n", attackDamage);
-           }
-           else{
-               System.out.printf("Regular Attack with %s\n", this.weapon.getCategory());
-               System.out.printf("Attack damage: %.2f\n", attackDamage);
-           }
+                System.out.printf("%s new health points: %.2f\n", opponent.getUniqueName(), opponent.getHealthPoints());
+                if (opponent.getHealthPoints() > 0) {
 
-           System.out.printf("%s new health points: %.2f\n", opponent.getUniqueName(), opponent.getHealthPoints());
-           if(opponent.getHealthPoints() > 0){
+                    //Comment / uncomment for attack until 1st block or attack changing each round
+                    //return true;
+                    attack(opponent);
+                } else {
+                    System.out.println(this.getUniqueName() + " won!");
+                    opponent.isLoser = true;
+                    Main.battleMap.remove(opponent.getUniqueName());
+                    return false;
+                }
+            } else if (opponent.getHealthPoints() <= 0) {
+                opponent.isLoser = true;
+                Main.battleMap.remove(opponent.getUniqueName());
 
-               //Comment / uncomment for attack until 1st block or attack changing each round
-               //return true;
-               attack(opponent);
-           }
-           else{
-               System.out.println(this.getUniqueName() + " won!");
-               Main.battleMap.remove(opponent.getUniqueName());
+                return false;
 
-               return false;
-           }
-       }
-       else if(opponent.getHealthPoints() <= 0){
-           Main.battleMap.remove(opponent.getUniqueName());
-           return false;
-       }
-       else{
-           System.out.println(opponent.getUniqueName() + " parried the attack! No damage was dealt!");
-           return false;
-       }
-        return false;
+            } else if (this.isLoser) {
+                System.out.printf("...has a winner: %s\n", opponent.getUniqueName());
+                return false;
+            } else {
+                System.out.println(opponent.getUniqueName() + " parried the attack! No damage was dealt!");
+                return false;
+            }
+            return false;
+        }
+
     }
-
-
-
     public boolean doDefend(){
         return Math.random() < 0.5 ? false : true;
     }
